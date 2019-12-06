@@ -2,6 +2,8 @@ package com.maxtrain.service;
 
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import com.maxtrain.model.Customer;
 import com.maxtrain.repository.CustomerRepository;
 
@@ -32,15 +34,31 @@ public class CustomerService {
     }
 
     /**
-     * Adds a new Customer to the database.
+     * Adds a new Customer to the database. Returns the newly added Customer or
+     * <code>null</code> if the user ID is already in use.
      * 
-     * @param newCustomer The customer to add @throws
+     * @param newCustomer The customer to add
      */
-    public void addNewCustomer(Customer newCustomer) {
-	customerRepository.save(newCustomer);
+    public Customer addNewCustomer(Customer newCustomer) {
+	if (!isUserIdAvailable(newCustomer.getUserId())) {
+	    return null;
+	}
+
+	return customerRepository.save(newCustomer);
     }
 
+    /**
+     * Returns the Customer with ID userId or <code>null</code> if the userId isn't
+     * found
+     * 
+     * @param userId
+     * @return See above
+     */
     public Customer getExistingCustomer(String userId) {
-	return customerRepository.getOne(userId);
+	try {
+	    return customerRepository.getOne(userId);
+	} catch (EntityNotFoundException ignored) {
+	    return null;
+	}
     }
 }
