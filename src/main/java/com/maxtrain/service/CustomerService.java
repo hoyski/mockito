@@ -48,8 +48,8 @@ public class CustomerService {
     }
 
     /**
-     * Returns the Customer with ID userId or <code>null</code> if the userId isn't
-     * found
+     * Returns the Customer with ID <code>userId</code> or <code>null</code> if the
+     * Customer isn't found
      * 
      * @param userId
      * @return See above
